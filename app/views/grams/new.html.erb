@@ -1,0 +1,8 @@
+<div class="col-10 offset-1">
+  <h1>New Gram</h1>
+
+  <%= simple_form_for @gram do |f| %>
+    <%= f.input :message %>
+    <%= f.submit "Send it!", class: "btn btn-primary btn-medium" %>
+  <% end %>
+</div>
