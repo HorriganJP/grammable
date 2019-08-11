@@ -1,7 +1,11 @@
 <br/>
 <h1 class="text-center">LANDING PAGE FOR GRAMS!</h1>
 
-<script>alert("Javascript is working");</script>
-
+<% @grams.each do |gram| %>
+  <div class="text-center">
+    <%= gram.message %>
+    <% end %>
+  </div>
+<% end %>
 
 
