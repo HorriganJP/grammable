@@ -10,8 +10,9 @@ RSpec.describe GramsController, type: :controller do
       end
 
       it "should successfully show the page" do
-        @user = User.create(email: "test@email.com", password: "password")
-        sign_in @user
+        user = FactoryBot.create(:user)
+        sign_in user
+
         get :new
         expect(response).to have_http_status(:success)
       end
@@ -27,7 +28,7 @@ RSpec.describe GramsController, type: :controller do
   describe "grams#create action" do
     context "as an authenticiated user" do
       before do
-        sign_in @user do
+        sign_in user do
           it "should properly deal with validation errors" do
             post :create,  params: { gram: { message: '' } }
             expect(response).to have_http_status(:unprocessable_entity)
@@ -43,10 +44,10 @@ RSpec.describe GramsController, type: :controller do
       post :create, params: { gram: { message: "Hello" } }
       expect(response).to redirect_to new_user_session_path
     end
-    
+
     context "as an authenticiated user" do
       before do
-        sign_in @user do
+        sign_in user do
           it "should successfully post gram entry to database" do
             post :create, params: { gram: { message: 'Hello!'} }
             expect(response).to redirect_to root_path
@@ -60,7 +61,7 @@ RSpec.describe GramsController, type: :controller do
     end
     context "as an un-authenticated user" do
       before do
-        sign_out @user do
+        sign_out user do
           it "should not post a gram and redirect user to root_path" do
             expect(response).to have_http_status(:unprocessable_entity)
             expect(response).to redirect_to new_user_session_path
