@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
 
-  #TEST
+  #TEST SHOW
   describe "grams#show action" do
     it "should successfully show the page if the gram is found" do
       gram = FactoryBot.create(:gram)
@@ -16,7 +16,7 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
-  #TEST
+  #TEST EDIT
   describe "grams#edit action" do
     it "should successfully show the edit form if the gram is found" do
       gram = FactoryBot.create(:gram)
@@ -31,7 +31,7 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
-  #TEST 
+  #TEST SHOW INDEX
   describe "grams#index" do
     context "as an authenticiated user" do
       it "should require users to be logged in" do 
@@ -50,7 +50,7 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
-  #TEST 
+  #TEST CREATE
   describe "grams#create action" do
     context "as an authenticiated user" do
       before do
@@ -65,7 +65,7 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
-  #TEST 
+  #TEST CREATE
   describe "grams#create action" do
     it "should require users to be logged in" do
       post :create, params: { gram: { message: "Hello" } }
@@ -98,7 +98,7 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
-  #TEST
+  #TEST UPDATE
   describe "grams#update action" do
     it "should successfully update gram" do
       gram = FactoryBot.create( :gram, message: "Initial Value" )
@@ -119,6 +119,20 @@ RSpec.describe GramsController, type: :controller do
       expect(response).to have_http_status(:unprocessable_entity)
       gram.reload
       expect(gram.message).to eq "Initial Value"
+    end
+  end
+
+  describe "gram#destroy action" do
+    it "should successfully destory gram" do
+      gram = FactoryBot.create(:gram)
+      delete :destroy, params: { id: gram.id }
+      expect(response).to redirect_to root_path
+      gram = Gram.find_by_id(gram.id)
+      expect(gram).to eq nil
+    end
+    it "should return a 404 message if we cannot find gram" do
+      delete :destroy, params: { id: 'TACOCAT' }
+      expect(response).to have_http_status(:not_found)
     end
   end
 end
