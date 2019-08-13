@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
 
+  #TEST
   describe "grams#show action" do
     it "should successfully show the page if the gram is found" do
       gram = FactoryBot.create(:gram)
@@ -12,10 +13,25 @@ RSpec.describe GramsController, type: :controller do
     it "should return 404 error if gram not found" do
       get :show, params: { id: 'TACOCAT' }
       expect(response).to have_http_status(:not_found)
-
     end
   end
 
+  #TEST
+  describe "grams#edit action" do
+    it "should successfully show the edit form if the gram is found" do
+      gram = FactoryBot.create(:gram)
+      get :edit, params: { id: gram.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    #TEST
+    it "should return a 404 error message if the gram is not found" do
+      get :edit, params: { id: 'nil' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  #TEST 
   describe "grams#index" do
     context "as an authenticiated user" do
       it "should require users to be logged in" do 
@@ -23,6 +39,7 @@ RSpec.describe GramsController, type: :controller do
         expect(response).to redirect_to new_user_session_path
       end
 
+      #TEST 
       it "should successfully show the page" do
         user = FactoryBot.create(:user)
         sign_in user
@@ -30,15 +47,10 @@ RSpec.describe GramsController, type: :controller do
         get :new
         expect(response).to have_http_status(:success)
       end
-
-      # it "should redirect if user is not logged in" do
-      #   @user != @current_user do
-      #     expect(response).to redirect_to root_path
-      #   end
-      # end
     end
   end
 
+  #TEST 
   describe "grams#create action" do
     context "as an authenticiated user" do
       before do
@@ -53,6 +65,7 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
+  #TEST 
   describe "grams#create action" do
     it "should require users to be logged in" do
       post :create, params: { gram: { message: "Hello" } }
@@ -82,6 +95,30 @@ RSpec.describe GramsController, type: :controller do
           end
         end
       end
+    end
+  end
+
+  #TEST
+  describe "grams#update action" do
+    it "should successfully update gram" do
+      gram = FactoryBot.create( :gram, message: "Initial Value" )
+      patch :update, params: { id: gram.id, gram: { message: 'Changed' } }
+      expect(response).to redirect_to root_path
+      gram.reload
+      expect(gram.message).to eq "Changed"
+    end
+
+    it "should return 404 if gram not found" do
+      patch :update, params: { id: 'YOLOSWAG', gram: { message: 'Changed' } }
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "should render the edit form with unprocessable_entity if gram not valid" do
+      gram = FactoryBot.create( :gram, message: "Initial Value" )
+      patch :update, params: { id: gram.id, gram: { message: '' } }
+      expect(response).to have_http_status(:unprocessable_entity)
+      gram.reload
+      expect(gram.message).to eq "Initial Value"
     end
   end
 end
