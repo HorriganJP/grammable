@@ -75,3 +75,8 @@ end
 
 gem 'devise'
 
+gem 'carrierwave', '>= 2.0.0rc', '< 3.0'
+
+gem 'figaro'
+
+gem 'fog-aws'

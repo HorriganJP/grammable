@@ -4,8 +4,6 @@
 <% @grams.each do |gram| %>
   <div class="text-center">
     <%= gram.message %>
-    <% end %>
+    <%= image_tag(gram.image.url) %>
   </div>
 <% end %>
-
-
