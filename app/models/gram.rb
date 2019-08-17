@@ -1,7 +1,10 @@
 class Gram < ApplicationRecord
+  validates :message, length: { minimum: 2 }
+  validates :picture, presence: true
+
+
   mount_uploader :image, ImageUploader
   mount_uploader :picture, PictureUploader
-  validates :message, length: { minimum: 2 }
 
   belongs_to :user
 end
