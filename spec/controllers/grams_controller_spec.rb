@@ -75,9 +75,16 @@ RSpec.describe GramsController, type: :controller do
       before do
         sign_in user do
           it "should properly deal with validation errors" do
-            post :create,  params: { gram: { message: '' } }
+            post :create,  params: { 
+              gram: { 
+                message: '', 
+                picture: fixture_file_upload("/picture.png", 'image/png')
+              } 
+            }
+
             expect(response).to have_http_status(:unprocessable_entity)
             expect(gram_count).to eq Gram.count
+
           end
         end
       end

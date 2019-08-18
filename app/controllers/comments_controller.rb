@@ -16,21 +16,9 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
   end
 
-  def edit
-
-  end
-
-  def update
-
-  end
-
-  def destroy
-
-  end
-
   private
 
-    def comment_params
-      params.require(:comment).permit(:message)
-    end
+  def comment_params
+    params.require(:comment).permit(:message)
+  end
 end

@@ -1,6 +1,6 @@
 class Gram < ApplicationRecord
-  validates :message, length: { minimum: 2 }
-  validates :picture, presence: true
+  validates :message, presence: true
+  validates :image, presence: true
 
 
   mount_uploader :image, ImageUploader
